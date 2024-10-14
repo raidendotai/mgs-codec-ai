@@ -3,6 +3,9 @@
 - Metal Gear Solid codec call simulator, real-time AI agent as a Chrome extension.
 - say hi 👋 [@n_raidenai](https://x.com/n_raidenai)
 
+![image](https://github.com/user-attachments/assets/39cae553-1312-4ce8-89be-a0c68c8e6a4b)
+
+
 ---
 
 ### Install
