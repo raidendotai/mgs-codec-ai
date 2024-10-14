@@ -1,0 +1,54 @@
+{
+	"name": "mgs-codec-ai",
+	"description": "brought to you by @n_raidenai",
+	"version": "0.1",
+	"manifest_version": 3,
+	"minimum_chrome_version": "116",
+	"action": {
+		"default_popup": "main.html",
+		"default_icon": {
+			"512": "media/icon512.png"
+		}
+	},
+	"icons": {
+		"512": "media/icon512.png"
+	},
+	"background": {
+		"service_worker": "service-worker.js",
+		"type": "module"
+	},
+	"permissions": [
+		"storage",
+		"tabs",
+		"scripting",
+		"offscreen",
+		"activeTab",
+		"notifications",
+		"webRequest",
+		"tabCapture",
+		"offscreen",
+		"contentSettings"
+	],
+	"content_security_policy": {
+		"default": "script-src 'self' 'wasm-unsafe-eval' 'unsafe-eval' 'unsafe-inline' blob: 'blob:'; script-src-elem 'self' 'wasm-unsafe-eval' 'unsafe-inline' blob: 'blob:'; object-src 'self'; ",
+		"extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
+	},
+	"host_permissions": [
+		"<all_urls>",
+		"*://*/*"
+	],
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["bundled-process-html.js","camfeed.js","config.js","content.js","inject.js","intercept.js","live.js","main.js","microphone_processor.js"],
+			"all_frames": true,
+			"run_at": "document_idle"
+		}
+	],
+	"web_accessible_resources": [
+		{
+			"resources": ["bundled-process-html.js","camfeed.js","config.js","content.js","inject.js","intercept.js","get_all_js.js","live.js","main.js","microphone_processor.js","modules/body-pix.js","modules/jquery-3.6.0.min.js","modules/js-tiktoken/base64-js.js","modules/js-tiktoken/chunk-YVJR5WRT.js","modules/js-tiktoken/index.cjs","modules/js-tiktoken/index.js","modules/js-tiktoken/lite.cjs","modules/js-tiktoken/lite.js","modules/js-tiktoken/ranks/cl100k_base.cjs","modules/js-tiktoken/ranks/cl100k_base.js","modules/js-tiktoken/ranks/gpt2.cjs","modules/js-tiktoken/ranks/gpt2.js","modules/js-tiktoken/ranks/o200k_base.cjs","modules/js-tiktoken/ranks/o200k_base.js","modules/js-tiktoken/ranks/p50k_base.cjs","modules/js-tiktoken/ranks/p50k_base.js","modules/js-tiktoken/ranks/p50k_edit.cjs","modules/js-tiktoken/ranks/p50k_edit.js","modules/js-tiktoken/ranks/r50k_base.cjs","modules/js-tiktoken/ranks/r50k_base.js","modules/openairealtime/index.js","modules/openairealtime/lib/api.js","modules/openairealtime/lib/client.js","modules/openairealtime/lib/conversation.js","modules/openairealtime/lib/event_handler.js","modules/openairealtime/lib/utils.js","modules/pglite/chunk-AOCDFDRO.js","modules/pglite/chunk-EL7DUS2A.js","modules/pglite/chunk-PKPYJS5H.js","modules/pglite/chunk-SJVDOE3S.js","modules/pglite/chunk-Y3AVQXKT.js","modules/pglite/contrib/adminpack.cjs","modules/pglite/contrib/adminpack.js","modules/pglite/contrib/amcheck.cjs","modules/pglite/contrib/amcheck.js","modules/pglite/contrib/auto_explain.cjs","modules/pglite/contrib/auto_explain.js","modules/pglite/contrib/bloom.cjs","modules/pglite/contrib/bloom.js","modules/pglite/contrib/btree_gin.cjs","modules/pglite/contrib/btree_gin.js","modules/pglite/contrib/btree_gist.cjs","modules/pglite/contrib/btree_gist.js","modules/pglite/contrib/citext.cjs","modules/pglite/contrib/citext.js","modules/pglite/contrib/cube.cjs","modules/pglite/contrib/cube.js","modules/pglite/contrib/earthdistance.cjs","modules/pglite/contrib/earthdistance.js","modules/pglite/contrib/fuzzystrmatch.cjs","modules/pglite/contrib/fuzzystrmatch.js","modules/pglite/contrib/hstore.cjs","modules/pglite/contrib/hstore.js","modules/pglite/contrib/isn.cjs","modules/pglite/contrib/isn.js","modules/pglite/contrib/lo.cjs","modules/pglite/contrib/lo.js","modules/pglite/contrib/ltree.cjs","modules/pglite/contrib/ltree.js","modules/pglite/contrib/pg_trgm.cjs","modules/pglite/contrib/pg_trgm.js","modules/pglite/contrib/seg.cjs","modules/pglite/contrib/seg.js","modules/pglite/contrib/tablefunc.cjs","modules/pglite/contrib/tablefunc.js","modules/pglite/contrib/tcn.cjs","modules/pglite/contrib/tcn.js","modules/pglite/contrib/tsm_system_rows.cjs","modules/pglite/contrib/tsm_system_rows.js","modules/pglite/contrib/tsm_system_time.cjs","modules/pglite/contrib/tsm_system_time.js","modules/pglite/contrib/uuid_ossp.cjs","modules/pglite/contrib/uuid_ossp.js","modules/pglite/fs/nodefs.cjs","modules/pglite/fs/nodefs.js","modules/pglite/fs/opfs-ahp/index.cjs","modules/pglite/fs/opfs-ahp/index.js","modules/pglite/index.cjs","modules/pglite/index.js","modules/pglite/live/index.cjs","modules/pglite/live/index.js","modules/pglite/postgres.cjs","modules/pglite/postgres.js","modules/pglite/templating.cjs","modules/pglite/templating.js","modules/pglite/vector/index.cjs","modules/pglite/vector/index.js","modules/pglite/worker/index.cjs","modules/pglite/worker/index.js","modules/tfjs.js","modules/three.min.js","modules/wavtools/index.js","modules/wavtools/lib/analysis/audio_analysis.js","modules/wavtools/lib/analysis/constants.js","modules/wavtools/lib/wav_packer.js","modules/wavtools/lib/wav_recorder.js","modules/wavtools/lib/wav_stream_player.js","modules/wavtools/lib/worklets/audio_processor.js","modules/wavtools/lib/worklets/stream_processor.js","offscreen.js","pgvector.js","postgres.js","postgres_test.js","service-worker.js"],
+			"matches": ["<all_urls>"]
+		}
+	]
+}

@@ -1,0 +1,260 @@
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>codec dev</title>
+		<!-- Tailwind CSS CDN -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@200..800&display=swap"
+			rel="stylesheet"
+		/>
+
+		<style>
+			@font-face {
+				font-family: "av07rationmgs2";
+				src: url("media/av07-ration-mgs2.ttf") format("truetype");
+			}
+			html {
+				background: black;
+				width: 400px; /* max: 800px */
+				height: 600px;
+			}
+
+			*::selection {
+				background-color: #10f774;
+				color: rgb(10, 10, 10);
+			}
+
+			/* scrollbar */
+			::-webkit-scrollbar {
+				width: 5px;
+				height: 5px;
+			}
+
+			::-webkit-scrollbar-track {
+				-webkit-box-shadow: inset 0 0 6px rgba(16, 16, 16, 0.3);
+				-webkit-border-radius: 10px;
+				border-radius: 10px;
+			}
+
+			::-webkit-scrollbar-thumb {
+				-webkit-border-radius: 10px;
+				border-radius: 10px;
+				background: rgba(97, 97, 97, 0.3);
+				-webkit-box-shadow: inset 0 0 6px rgba(76, 76, 76, 0.5);
+			}
+
+			::-webkit-scrollbar-thumb:window-inactive {
+				background: rgba(16, 16, 16, 0.3);
+			}
+
+			* {
+				font-family: "Inter", sans-serif;
+				font-optical-sizing: auto;
+				font-weight: 400;
+				font-style: normal;
+			}
+			body {
+				background: url("media/bg.webp") no-repeat center center fixed;
+				background-size: cover;
+
+				height: 600px;
+				max-height: 600px;
+
+				overflow-y: auto;
+			}
+			.main-btn-text {
+				font-family: "av07rationmgs2", Arial, sans-serif;
+				text-align: left;
+			}
+			.modal {
+				display: none;
+			}
+			#toast {
+				visibility: hidden;
+				min-width: 250px;
+				margin-left: -125px;
+				background-color: #333;
+				color: #fff;
+				text-align: center;
+				border-radius: 2px;
+				padding: 16px;
+				position: fixed;
+				z-index: 1;
+				left: 50%;
+				bottom: 30px;
+				font-size: 17px;
+			}
+
+			#toast.show {
+				visibility: visible;
+				-webkit-animation:
+					fadein 0.5s,
+					fadeout 0.5s 2.5s;
+				animation:
+					fadein 0.5s,
+					fadeout 0.5s 2.5s;
+			}
+
+			@-webkit-keyframes fadein {
+				from {
+					bottom: 0;
+					opacity: 0;
+				}
+				to {
+					bottom: 30px;
+					opacity: 1;
+				}
+			}
+
+			@keyframes fadein {
+				from {
+					bottom: 0;
+					opacity: 0;
+				}
+				to {
+					bottom: 30px;
+					opacity: 1;
+				}
+			}
+
+			@-webkit-keyframes fadeout {
+				from {
+					bottom: 30px;
+					opacity: 1;
+				}
+				to {
+					bottom: 0;
+					opacity: 0;
+				}
+			}
+
+			@keyframes fadeout {
+				from {
+					bottom: 30px;
+					opacity: 1;
+				}
+				to {
+					bottom: 0;
+					opacity: 0;
+				}
+			}
+		</style>
+	</head>
+
+	<body class="font-sans bg-black">
+		<div id="container" class="p-0 m-0" style="display: none">
+			<div class="p-6 text-base text-left text-white break-words">
+				<div class="my-1 pb-5 w-full">
+					<button
+						id="startCall"
+						class="main-btn-text g-pink-900 hover:text-green-600"
+					>
+						Codec Call
+					</button>
+				</div>
+				<div class="my-1 pb-5 w-full">
+					<button
+						id="toggleRecording"
+						class="main-btn-text hover:text-green-600"
+					></button>
+				</div>
+				<div class="my-1 pb-5 w-full">
+					<button
+						id="toggleRandomCall"
+						class="main-btn-text hover:text-green-600"
+					></button>
+				</div>
+				<div class="my-1 pb-5 w-full">
+					<button id="showHistory" class="main-btn-text hover:text-green-600">
+						Show History
+					</button>
+				</div>
+				<div class="my-1 pb-5 w-full">
+					<button id="clearStorage" class="main-btn-text hover:text-red-600">
+						Clear Storage
+					</button>
+				</div>
+				<div class="my-1 pt-4 pb-5 w-full border-t" style="border-color: #222">
+					<a
+						id="twitter"
+						href="http://x.com/n_raidenai"
+						target="_blank"
+						class="main-btn-text hover:text-green-600 text-sm"
+						>@n_raidenai</a
+					>
+				</div>
+				<div class="my-1 mb-2 pb-5 w-full">
+					<a
+						id="github"
+						href="http://github.com/raidendotai"
+						target="_blank"
+						class="main-btn-text hover:text-green-600 text-sm"
+						>★ github/raidendotai</a
+					>
+				</div>
+			</div>
+
+			<!-- The Modal for History -->
+			<div
+				id="historyModal"
+				class="modal text-white fixed inset-0 flex items-center justify-center"
+			>
+				<div
+					style="width: 380px; background: #222"
+					class="modal-content my-2 p-4 rounded-lg shadow-lg mx-auto"
+				>
+					<span class="close text-gray-500 text-2xl font-bold cursor-pointer"
+						>&times;</span
+					>
+					<h2 class="text-2xl mb-2 pb-2 border-b" style="border-color: #555">
+						History
+					</h2>
+					<div
+						id="historyList"
+						style="height: 450px; max-height: 450px"
+						class="space-y-2 overflow-auto whitespace-pre-wrap break-words"
+					></div>
+				</div>
+			</div>
+
+			<div
+				id="viewModal"
+				class="modal text-white fixed inset-0 bg-black flex items-center justify-center"
+			>
+				<div
+					style="width: 380px; background: #333"
+					class="modal-content my-4 p-4 rounded-lg shadow-lg mx-auto"
+				>
+					<span class="close text-gray-500 text-2xl font-bold cursor-pointer"
+						>&times;</span
+					>
+					<h2 class="text-xl mb-4">Content</h2>
+					<pre
+						id="markdownContent"
+						style="height: 400px; max-height: 400px; background: #222"
+						class="whitespace-pre-wrap break-words text-white p-1 m-1 rounded overflow-auto monospace"
+					></pre>
+				</div>
+			</div>
+
+			<div
+				id="toast"
+				class="fixed bottom-5 right-5 bg-gray-800 text-white px-4 py-2 rounded shadow-lg opacity-0 transition-opacity duration-500"
+			></div>
+		</div>
+		<div id="spinner" style="display: block">
+			<div class="flex items-center justify-center p-4 m-4">
+				<div
+					class="animate-spin rounded-full h-8 w-8 border-t-4 border-b-4 border-green-900"
+				></div>
+			</div>
+		</div>
+		<script type="module" src="main.js"></script>
+	</body>
+</html>

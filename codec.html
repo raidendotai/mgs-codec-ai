@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Codec Call</title>
+		<link
+			href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@200..800&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="icon" href="media/icon512.png" type="image/png" />
+		<script src="./modules/three.min.js"></script>
+		<script src="./modules/tfjs.js"></script>
+		<script src="./modules/body-pix.js"></script>
+		<style>
+			@font-face {
+				font-family: "av07rationmgs2";
+				src: url("media/av07-ration-mgs2.ttf") format("truetype");
+			}
+
+			@font-face {
+				font-family: "texgyreheros";
+				src: url("media/texgyreheros-regular.otf") format("opentype");
+			}
+
+			*::selection {
+				background-color: #10f774;
+				color: rgb(10, 10, 10);
+			}
+
+			::-webkit-scrollbar {
+				display: none;
+				/* Hide scrollbar for Chrome, Safari, and Opera */
+			}
+
+			/* Hide scrollbar for IE, Edge, and Firefox */
+			* {
+				scrollbar-width: none;
+				/* Firefox */
+			}
+
+			/* Background and fonts */
+			body {
+				background-color: #06030a;
+				color: #f1eef5;
+				font-family: texgyreheros, Arial, sans-serif;
+				width: 1100px;
+				height: 530px;
+			}
+
+			/* Floating Border Surrounds */
+			.border-line {
+				border: 1px solid #4d6765;
+			}
+
+			/* Layout base styling */
+			.container {
+				width: 1000px;
+				height: 530px;
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start;
+				padding: 0;
+				margin: 10px;
+			}
+
+			.main-content {
+				display: flex;
+				justify-content: space-between;
+				height: 280px;
+				position: relative;
+				width: 900px;
+				padding-left: 20px;
+			}
+
+			/* Avatar styling */
+			.avatar {
+				width: 240px;
+				height: 280px;
+				position: relative;
+			}
+
+			.avatar-norelative {
+				width: 240px;
+				height: 280px;
+				position: relative;
+			}
+
+			.avatar-container {
+				width: 240px;
+				height: 280px;
+				position: relative;
+			}
+
+			/* Frequency and Middle Section Styling */
+			.frequency-section {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: start;
+				padding-top: 48px;
+				width: 350px;
+				font-family: "av07rationmgs2", Arial, sans-serif;
+				/* background:red;*/
+			}
+
+			.frequency-section .tx-dark-green {
+				color: #1a524b;
+			}
+
+			.frequency-section .tx-green {
+				color: #32ae94;
+			}
+
+			/* Dialogue Box and Positioning */
+			.dialogue-box {
+				position: absolute;
+				width: 1000px;
+				left: 10px;
+				top: 300px;
+				height: 220px;
+				background-color: #030406;
+				box-shadow:
+					0 0 2px rgba(77, 103, 101, 0.5),
+					0 0 4px rgba(77, 103, 101, 0.5);
+			}
+			.transcript {
+				background-color: #030406;
+				color: #e3e3e3;
+				text-align: left;
+				font-size: 1.3rem;
+				line-height: 1.75rem;
+			}
+
+			/* Floating Border Setup */
+			.floating-borders-feed {
+				position: absolute;
+				width: 1000px;
+				left: 10px;
+				top: 23px;
+				height: 234px;
+				z-index: 10;
+				opacity: 0.7;
+				box-shadow:
+					0 0 2px rgba(77, 103, 101, 0.5),
+					0 0 4px rgba(77, 103, 101, 1);
+			}
+
+			.floating-borders-freq {
+				position: absolute;
+				width: 300px;
+				left: 360px;
+				top: 23px;
+				height: 234px;
+				z-index: 10;
+				box-shadow:
+					0 0 2px rgba(77, 103, 101, 0.5),
+					0 0 4px rgba(77, 103, 101, 0.5);
+				opacity: 0.7;
+			}
+
+			.floating-borders-midfreq {
+				position: absolute;
+				width: 300px;
+				left: 360px;
+				top: 217px;
+				height: 40px;
+				box-shadow:
+					0 0 2px rgba(77, 103, 101, 0.5),
+					0 0 4px rgba(77, 103, 101, 0.5);
+				z-index: 10;
+				opacity: 0.7;
+			}
+			.frequency-text {
+				width: 280px;
+				margin-top: 107px;
+			}
+
+			video {
+				object-fit: cover;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!-- Main Codec container -->
+		<div class="container p-0 m-0 p-4">
+			<!-- Floating borders to simulate rectangled areas around content -->
+			<div class="floating-borders-feed"></div>
+			<div class="floating-borders-freq"></div>
+			<div class="floating-borders-midfreq"></div>
+
+			<!-- Main Avatar and Frequency Section -->
+			<div class="main-content mx-auto">
+				<div class="avatar-container">
+					<video id="leftVideo" loop muted autoplay class="w-full h-full"></video>
+					<div class="absolute inset-y-0 left-[-4px] w-[2px] h-full"></div>
+				</div>
+
+				<!-- Frequency Section -->
+				<div class="frequency-section">
+					<div id="audioIndicator" class="w-2 h-2 bg-gray-200 rounded-full"></div>
+					<div id="timer" class="text-sm opacity-50 text-center">
+						<!-- timer here-->
+					</div>
+					<div id="freq" class="tx-green text-3xl text-center">
+						<!-- freq here -->
+					</div>
+					<div class="frequency-text text-xs flex justify-between">
+						<div class="tx-dark-green">▼ MEM.</div>
+						<div class="tx-dark-green">◀ TUNE ▶</div>
+					</div>
+				</div>
+
+				<div class="avatar-container">
+					<video id="rightVideo" muted autoplay class="w-full h-full"></video>
+					<canvas
+						id="outputCanvas"
+						class="w-full h-full absolute top-0 left-0"
+					></canvas>
+					<div class="glitch"></div>
+				</div>
+			</div>
+
+			<!-- Dialogue Section -->
+			<div class="dialogue-box p-6 px-24">
+				<textarea
+					id="caption"
+					class="w-full transcript break-words whitespace-pre-wrap rounded resize-none overflow-y-auto line-clamp-5"
+					rows="6"
+					disabled
+					style="outline: none"
+				></textarea>
+			</div>
+		</div>
+
+		<script src="camfeed.js"></script>
+		<script src="live.js" type="module"></script>
+	</body>
+</html>

@@ -1,0 +1,2 @@
+import{i as e}from"../chunk-Y3AVQXKT.js";e();var t=async(n,s)=>({bundlePath:new URL("../adminpack.tar.gz",import.meta.url)}),p={name:"adminpack",setup:t};export{p as adminpack};
+//# sourceMappingURL=adminpack.js.map
